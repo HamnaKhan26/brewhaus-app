@@ -3,7 +3,6 @@ const breweryService = require('../services/breweryService');
 const getAllBreweries = async (req, res) => {
     try {
         //GET https://api.openbrewerydb.org/v1/breweries?by_name=san_diego&per_page=3
-        console.log(req.query);
         const { page = 1, per_page = 10, by_name= ''} = req.query;
         const breweries = await breweryService.getAllBreweries(page, per_page, by_name);
         res.json(breweries);

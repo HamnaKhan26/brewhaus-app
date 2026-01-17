@@ -1,30 +1,30 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div id="app">
+    <!-- Optional Header -->
+    <header class="app-header">
+      <h1>Brewhaus</h1>
+    </header>
+
+    <!-- This is where Home.vue OR Details.vue will be rendered -->
+    <router-view />
+    
+    <!-- Optional Footer -->
+    <footer class="app-footer">
+      <p>© 2026 Brewhaus</p>
+    </footer>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+#app {
+  font-family: Arial, sans-serif;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.app-header, .app-footer {
+  padding: 1em;
+  text-align: center;
+  background-color: #f0f0f0;
 }
 </style>
