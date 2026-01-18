@@ -6,22 +6,33 @@ export const useBreweryStore = defineStore("breweryStore", {
     breweries: [],
     selectedBrewery: null,
     currentPage: 1,
+    perPage: 10,
     searchQuery: "",
     hasNextPage: true,
   }),
   actions: {
-    async fetchBreweries(page) {
-      const query = this.searchQuery
-        ? `&by_name=${encodeURIComponent(this.searchQuery)}`
-        : "";
-      const response = await axios.get(
-        `/api/breweries?page=${page}&per_page=10${query}`
-      );
+    async fetchBreweries(page = 1) {
+      let url = "";
+
+      if (this.searchQuery) {
+        //SEARCH API
+        url = `/api/breweries?query=${encodeURIComponent(this.searchQuery)}&page=${page}&per_page=${this.perPage}`;
+      } else {
+        // LIST API
+        url = `/api/breweries?page=${page}&per_page=${this.perPage}`;
+      }
+
+      const response = await axios.get(url);
+
       this.breweries = response.data;
       this.currentPage = page;
+      this.hasNextPage = response.data.length === this.perPage;
+    },
 
-      this.hasNextPage = response.data.length > 0;
-
+    resetBreweries() {
+      this.breweries = [];
+      this.currentPage = 1;
+      this.hasNextPage = true;
     },
 
     async fetchBreweryDetails(id) {
