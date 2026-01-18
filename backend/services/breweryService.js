@@ -2,17 +2,18 @@ const axios = require("axios");
 
 const API_URL = "https://api.openbrewerydb.org/v1/breweries";
 
-const getAllBreweries = async (page, per_page, search) => {
-  // GET https://api.openbrewerydb.org/v1/breweries?by_name=san_diego&per_page=3
-
-  let url = `${API_URL}?page=${page}&per_page=${per_page}`;
+const getAllBreweries = async (page = 1, per_page = 10, search = "") => {
+  let url;
 
   if (search) {
-    url += `&by_name=${encodeURIComponent(search)}`;
+    // SEARCH API
+    url = `${API_URL}/search?query=${encodeURIComponent(search)}&page=${page}&per_page=${per_page}`;
+  } else {
+    // LIST API
+    url = `${API_URL}?page=${page}&per_page=${per_page}`;
   }
 
   const response = await axios.get(url);
-
   return response.data;
 };
 
