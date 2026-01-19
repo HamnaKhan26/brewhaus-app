@@ -3,9 +3,10 @@
     <p>Your one-stop solution for managing your home brewing adventures.</p>
 
     <div>
-        <SearchBar v-model="searchQuery" @search="onSearch" />
+        <SearchBar v-model="searchQuery" />
         <Loader v-if="loading" />
         <BreweryList v-else />
+
         <p>Total Breweries: {{ breweryStore.breweries.length }}</p>
         <Pagination :current-page="currentPage" :has-next-page="hasNextPage" @page-changed="onPageChange" />
     </div>
@@ -17,7 +18,9 @@ import { useBreweryStore } from '../store/breweryStore';
 import SearchBar from '../components/SearchBar.vue';
 import Pagination from '../components/Pagination.vue';
 import Loader from '../components/Loader.vue';
-import { onMounted, computed, ref } from 'vue';
+import debounce from 'lodash/debounce'
+import { onMounted, computed, ref, watch, onBeforeUnmount } from 'vue';
+
 import { storeToRefs } from 'pinia';
 
 export default {
@@ -34,17 +37,30 @@ export default {
 
         const searchQuery = computed({
             get: () => breweryStore.searchQuery,
-            set: (value) => breweryStore.searchQuery = value
+            set: (value) => (breweryStore.searchQuery = value)
         });
 
-        const { fetchBreweries, currentPage, hasNextPage } = storeToRefs(breweryStore);
+        const { currentPage, hasNextPage } = storeToRefs(breweryStore);
 
-        // Wrap fetchBreweries to toggle loader
         const loadBreweries = async (page = 1) => {
             loading.value = true;
             await breweryStore.fetchBreweries(page);
             loading.value = false;
         };
+
+        const debouncedSearch = debounce(() => {
+            breweryStore.resetBreweries();
+            loadBreweries(1);
+        }, 400);
+
+        watch(searchQuery, (newVal) => {
+            if (newVal && newVal.trim()) {
+                debouncedSearch();
+            } else {
+                breweryStore.resetBreweries();
+                loadBreweries(1);
+            }
+        });
 
         onMounted(() => {
             if (!breweryStore.breweries.length) {
@@ -52,19 +68,25 @@ export default {
             }
         });
 
-        const onSearch = () => loadBreweries(1); // reset page
-        const onPageChange = (page) => loadBreweries(page);
+        const onPageChange = (page) => {
+            loadBreweries(page);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+
+        onBeforeUnmount(() => {
+            debouncedSearch.cancel();
+        });
+
         return {
             breweryStore,
-            fetchBreweries,
             searchQuery,
-            currentPage,
+            loading,
             hasNextPage,
-            onSearch,
-            onPageChange,
-            loading
+            currentPage,
+            onPageChange
         };
-    },
+    }
+
 };
 
 </script>
