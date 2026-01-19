@@ -3,7 +3,7 @@
 
 BrewHaus is a modern full-stack web application built with Vue 3, Pinia, and Node.js that allows users to explore breweries using the OpenBreweryDB API.
 
-Features of this website should include:
+Features of this website includes:
 - Main page listing out breweries
 - Pagination of breweries
 - Simple search function of breweries
@@ -15,6 +15,7 @@ Backend Setup
 npm install
 npm run start
 `
+
 Server runs on http://localhost:3000
 
 Frontend Setup
