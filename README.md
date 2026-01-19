@@ -14,3 +14,8 @@ Backend Setup
 npm install
 npm run start
 `
+Frontend Setup
+``cd frontend
+npm install
+npm run dev
+``
