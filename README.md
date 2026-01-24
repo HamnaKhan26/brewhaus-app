@@ -1,18 +1,28 @@
 # brewhaus
-A take home test designing an API interface for a fictitious company
+🍺 BrewHaus – Brewery Explorer
 
-Welcome to Brewhaus!
+BrewHaus is a modern full-stack web application built with Vue 3, Pinia, and Node.js that allows users to explore breweries using the OpenBreweryDB API.
 
-Please design a simple website using a modern JavaScript framework (prefer Vue 2.0 or 3.0) for the fictitious company BREWHAUS using the API https://www.openbrewerydb.org/
-
-Features of this website should include:
+Features of this website includes:
 - Main page listing out breweries
-- Pagination or lazy loading of breweries
+- Pagination of breweries
 - Simple search function of breweries
 - Details page where a user can find out more information about specific breweries
 
-Feel free to embellish beyond that.
+Backend Setup
 
-While you are not obligated to use them, this repo comes with an API file and a Brewhaus image. **You are free to use anything else you would like!**
+`cd backend
+npm install
+npm run start
+`
 
-Good luck!
+Server runs on http://localhost:3000
+
+Frontend Setup
+
+``cd frontend
+npm install
+npm run dev
+``
+
+Frontend runs on http://localhost:5173
